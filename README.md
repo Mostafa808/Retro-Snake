@@ -1,5 +1,5 @@
 # Retro-Snake
-Retro snake game on C++
+Retro snake game using raylib on C++
 
 The executable file is in: Retro-Snake/Snake game/x64/Debug/
 
