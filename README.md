@@ -1,7 +1,7 @@
 # Retro-Snake
 Retro snake game on C++
 
-Executable file is in x64\Debug
+The executable file is in: Retro-Snake/Snake game/x64/Debug/
 
 Features to add:
 - Sound
