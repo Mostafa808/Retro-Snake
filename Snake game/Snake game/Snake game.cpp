@@ -3,8 +3,8 @@
 #include <deque>
 #include <string>
 #include <raymath.h>
-//MAke it that each increment in size, the interval for update decreases i.e. speeds up
-// Score = len -3
+// Better updated system to read user's directional inputs in an event queue
+// Let players start by moving to the left as well
 // Initialization
 //--------------------------------------------------------------------------------------
 Color green = { 125, 183, 59, 255 };
@@ -14,7 +14,7 @@ const int cellWidthCount = 40;
 const int cellHeightCount = 30;
 const int borderOffset = 84;
 
-double INTERVAL = 0.15;
+double INTERVAL = 0.20;
 double lastUpdateTime = 0;
 
 bool eventTriggered(double interval) {
@@ -99,7 +99,7 @@ public:
 
     void Reset() {
         body = { Vector2{ 9,10 }, Vector2{ 8,10 }, Vector2{ 7,10 } };
-        direction = { 1, 0 };
+        direction = { 0, 0 };
     }
 
 };
@@ -109,7 +109,7 @@ public:
     Snake snake = Snake();
     //pass in snake body to make sure initially the food does not spawn on the snake
     Food food = Food(snake.body);
-    bool running = true;
+    bool running = false;
     int score = 0;
 
     void Draw() {
@@ -151,6 +151,9 @@ public:
         if (Vector2Equals(food.position, snake.body[0])) {
             //std::cout << "collided" << std::endl;
             food.position = food.Move(snake.body);
+            if (INTERVAL > 0.05) {
+                INTERVAL -= 0.005; //Speeds up!
+            }
             snake.addSegment = true;
             score++;
         }
@@ -195,10 +198,11 @@ int main(void)
     {
         BeginDrawing();
         // UPDATING
+        game.CheckDirection();
         if (eventTriggered(INTERVAL)) {
             game.Update();
         }
-        game.CheckDirection();
+        
         // DRAWING
         ClearBackground(green);
         DrawText("RETRO SNAKE", borderOffset - 5, 20, 40, DARKGREEN);
