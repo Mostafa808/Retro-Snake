@@ -5,6 +5,7 @@ The executable file is in: Retro-Snake/Snake game/x64/Debug/
 
 Features to add:
 - Sound
-- Quality control on changing directions
+- Quality control on changing directions with the use of events queue
+- Let players start by moving to the left as well
 
   
