@@ -1,18 +1,18 @@
-#include <iostream>
 #include <raylib.h>
-#include <deque>
-#include <string>
 #include <raymath.h>
+#include <deque>
+
+
 // Better updated system to read user's directional inputs in an event queue
 // Let players start by moving to the left as well
 // Initialization
 //--------------------------------------------------------------------------------------
 Color green = { 125, 183, 59, 255 };
 
-const int cellSize = 28;
-const int cellWidthCount = 40;
-const int cellHeightCount = 30;
-const int borderOffset = 84;
+int cellSize = 28;
+int cellWidthCount = 40;
+int cellHeightCount = 30;
+int borderOffset = 84;
 
 double INTERVAL = 0.20;
 double lastUpdateTime = 0;
@@ -55,12 +55,13 @@ public:
 
     void Draw() {
         //DrawRectangle(position.x * cellSize, position.y * cellSize,cellSize, cellSize, RAYWHITE);
-        DrawTexture(texture, (float)borderOffset + position.x * (float)cellSize, (float)borderOffset + position.y * (float)cellSize, RAYWHITE);
+        DrawTexture(texture, (int)borderOffset + (int)(position.x * cellSize), (int)(borderOffset + position.y * cellSize), RAYWHITE);
     }
 
     Vector2 GenerateRandomPos() {
-        float x = GetRandomValue(0, (float)cellWidthCount - 1);
-        float y = GetRandomValue(0, (float)cellHeightCount - 1);
+        //Vector2 requires float values to be returned
+        float x = (float)GetRandomValue(0, cellWidthCount - 1);
+        float y = (float)GetRandomValue(0, cellHeightCount - 1);
         return Vector2{ x, y };
     }
 
@@ -83,7 +84,7 @@ public:
         for (unsigned int i = 0; i < body.size(); i++) {
             float x = body[i].x;
             float y = body[i].y;
-            DrawRectangleRounded(Rectangle{ borderOffset + x * cellSize, borderOffset + y * cellSize, cellSize, cellSize}, 0.75, 10, BLACK);
+            DrawRectangleRounded(Rectangle{ (float)borderOffset + (float)(x * cellSize), (float)(borderOffset + y * cellSize), (float)cellSize, (float)cellSize}, 0.75, 10, BLACK);
         }
     }
 
@@ -111,6 +112,20 @@ public:
     Food food = Food(snake.body);
     bool running = false;
     int score = 0;
+    Sound eatSound;
+    Sound wallSound;
+
+    Game() {
+        InitAudioDevice();
+        eatSound = LoadSound("Sounds/mc_eat.mp3");
+        wallSound = LoadSound("Sounds/wall.mp3");
+    }
+
+    ~Game() {
+        UnloadSound(eatSound);
+        UnloadSound(wallSound);
+        CloseAudioDevice();
+    }
 
     void Draw() {
         snake.Draw();
@@ -150,6 +165,7 @@ public:
     void CheckFoodCollision() {
         if (Vector2Equals(food.position, snake.body[0])) {
             //std::cout << "collided" << std::endl;
+            PlaySound(eatSound);
             food.position = food.Move(snake.body);
             if (INTERVAL > 0.05) {
                 INTERVAL -= 0.005; //Speeds up!
@@ -175,6 +191,7 @@ public:
     }
 
     void GameOver() {
+        PlaySound(wallSound);
         snake.Reset();
         food.position = food.Move(snake.body);
         running = false;
