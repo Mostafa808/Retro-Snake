@@ -8,4 +8,6 @@ Features to add:
 - Quality control on changing directions with the use of events queue
 - Let players start by moving to the left as well
 
+Bugs to fix:
+- Game speed-up is based on the time the window is opened rather than the time since the snake has started moving from its initial idle state.
   
