@@ -1,5 +1,5 @@
 # Retro-Snake
-Retro snake game using raylib on C++
+Retro snake game using raylib on C++ <br>
 <br>
 Play online now at: https://retro-snake.netlify.app/ <br>
 
