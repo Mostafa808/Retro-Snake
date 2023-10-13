@@ -1,5 +1,7 @@
 # Retro-Snake
 Retro snake game using raylib on C++
+<br>
+Play online now at: https://retro-snake.netlify.app/ <br>
 
 The executable file is in: Retro-Snake/Snake game/x64/Debug/
 
